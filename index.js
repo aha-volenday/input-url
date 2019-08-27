@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import InputDate from '@volenday/input-date';
+import validate from 'validate.js';
+import { Button, Form, Input, Popover } from 'antd';
 
-// ant design
-import { Button, Input, Popover } from 'antd';
+import './styles.css';
 
 export default class InputUrl extends Component {
-	initialState = { hasChange: false, isPopoverVisible: false, localValue: '', isFocused: false };
+	initialState = { errors: [], hasChange: false, isPopoverVisible: false, localValue: '', isFocused: false };
 	state = { ...this.initialState, initialState: this.initialState };
 
 	static getDerivedStateFromProps(nextProps, prevState) {
@@ -30,8 +31,30 @@ export default class InputUrl extends Component {
 		return null;
 	}
 
-	handleChange = value => {
-		this.setState({ localValue: value, hasChange: true });
+	onChange = async value => {
+		const { localValue } = this.state;
+		const { action, id, onChange, onValidate } = this.props;
+
+		if (localValue != '' && value == '') onChange(id, value);
+		const errors = this.validate(value);
+		await this.setState({ errors, localValue: value, hasChange: action === 'add' ? false : true });
+		if (onValidate) onValidate(id, errors);
+	};
+
+	validate = value => {
+		const { id, required = false } = this.props;
+
+		const constraints = {
+			[id]: {
+				presence: { allowEmpty: !required },
+				url: {
+					allowLocal: true
+				}
+			}
+		};
+
+		const errors = validate({ [id]: value }, constraints);
+		return errors ? errors[id] : [];
 	};
 
 	handlePopoverVisible = visible => {
@@ -39,16 +62,8 @@ export default class InputUrl extends Component {
 	};
 
 	renderInput() {
-		const {
-			disabled = false,
-			id,
-			label = '',
-			onChange,
-			placeholder = '',
-			required = false,
-			styles = {},
-			value = ''
-		} = this.props;
+		const { localValue = '' } = this.state;
+		const { disabled = false, id, label = '', onChange, placeholder = '', styles = {}, value = '' } = this.props;
 
 		return (
 			<Input
@@ -57,28 +72,19 @@ export default class InputUrl extends Component {
 				disabled={disabled}
 				name={id}
 				placeholder={placeholder || label || id}
-				required={required}
-				size="large"
 				style={styles}
-				type="url"
+				type="text"
 				onBlur={e => {
 					if (e.target.value != value) onChange(id, e.target.value);
-
 					this.setState({ isFocused: false });
 				}}
-				onChange={e => {
-					if (this.state.localValue != '' && e.target.value == '') onChange(id, e.target.value);
-
-					this.handleChange(e.target.value);
-				}}
-				onFocus={e => {
-					this.setState({ isFocused: true });
-				}}
+				onChange={e => this.onChange(e.target.value)}
+				onFocus={() => this.setState({ isFocused: true })}
 				onPressEnter={e => {
 					onChange(id, e.target.value);
 					return true;
 				}}
-				value={this.state.localValue || ''}
+				value={localValue ? localValue : ''}
 			/>
 		);
 	}
@@ -118,41 +124,22 @@ export default class InputUrl extends Component {
 	};
 
 	render() {
-		const { hasChange } = this.state;
-		const { id, label = '', required = false, withLabel = false, historyTrack = false } = this.props;
+		const { errors, hasChange } = this.state;
+		const { action, label = '', required = false, withLabel = false, historyTrack = false } = this.props;
 
-		if (withLabel) {
-			if (historyTrack) {
-				return (
-					<div className="form-group">
-						<span class="float-left">
-							<label for={id}>{required ? `*${label}` : label}</label>
-						</span>
-						{hasChange && this.renderPopover()}
-						{this.renderInput()}
-					</div>
-				);
-			}
+		const formItemCommonProps = {
+			colon: false,
+			help: errors.length != 0 ? errors[0] : '',
+			label: withLabel ? label : false,
+			required,
+			validateStatus: errors.length != 0 ? 'error' : 'success'
+		};
 
-			return (
-				<div className="form-group">
-					<label for={id}>{required ? `*${label}` : label}</label>
-					{this.renderInput()}
-				</div>
-			);
-		} else {
-			if (historyTrack) {
-				return (
-					<div class="form-group">
-						{hasChange && this.renderPopover()}
-						{this.renderInput()}
-					</div>
-				);
-			}
-
-			return this.renderInput();
-		}
-
-		return null;
+		return (
+			<Form.Item {...formItemCommonProps}>
+				{historyTrack && hasChange && action !== 'add' && this.renderPopover()}
+				{this.renderInput()}
+			</Form.Item>
+		);
 	}
 }

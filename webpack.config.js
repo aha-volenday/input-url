@@ -55,7 +55,8 @@ module.exports = {
 	externals: {
 		'@volenday/input-date': 'commonjs2 @volenday/input-date',
 		antd: 'commonjs2 antd',
-		react: 'commonjs2 react'
+		react: 'commonjs2 react',
+		'validate.js': 'commonjs2 validate.js'
 	},
 	plugins: [
 		new webpack.optimize.AggressiveMergingPlugin(),
