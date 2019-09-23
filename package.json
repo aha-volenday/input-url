@@ -1,6 +1,6 @@
 {
 	"name": "@volenday/input-url",
-	"version": "0.1.15",
+	"version": "0.1.16",
 	"main": "dist/index.min.js",
 	"author": "Volenday <developers@volenday.com>",
 	"license": "MIT",

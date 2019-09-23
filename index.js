@@ -111,7 +111,6 @@ export default class InputUrl extends Component {
 			placeholder = '',
 			styles = {}
 		} = this.props;
-		console.log('multiple: ', multiple);
 
 		if (multiple) {
 			const { url, urlIndex, action } = this.state;
