@@ -55,13 +55,15 @@ export default class InputUrl extends Component {
 		const { url, action, urlIndex } = this.state;
 		const { id, onChange, value = [] } = this.props;
 
-		let errors = {};
+		let errors = {},
+			urlList = Array.isArray(value) ? [...value] : value.split(',');
 		switch (action) {
 			case 'add':
 				errors = this.validate(url);
 				if (url === '') return message.error('Please enter a url');
 				if (errors.length) return message.error('Cannot add invalid url.');
-				onChange({ target: { name: id, value: [...value, url] } }, id, [...value, url]);
+
+				onChange({ target: { name: id, value: [...urlList, url] } }, id, [...urlList, url]);
 				this.setState({ url: '' });
 				break;
 			case 'edit':
@@ -69,7 +71,6 @@ export default class InputUrl extends Component {
 				if (url === '') return message.error('Please enter a url');
 				if (errors.length) return message.error('Cannot edit invalid url.');
 
-				const urlList = Array.isArray(value) ? [...value] : value.split(',');
 				const newValue = urlList.map((d, index) => {
 					if (index === urlIndex) d = url;
 					return d;
@@ -116,39 +117,31 @@ export default class InputUrl extends Component {
 			const { value = [] } = this.props;
 			const urlList = Array.isArray(value) ? [...value] : value.split(',');
 
-			const tagChild = urlList.map((val, index) => {
+			const tagChild = urlList.map((d, i) => {
 				const tagElem = (
 					<Tooltip
 						title={`${
 							action === 'add'
 								? 'Click to edit url'
-								: action === 'edit' && urlIndex === index
+								: action === 'edit' && urlIndex === i
 								? 'Click to cancel edit'
 								: 'Click to edit url'
 						}`}
 						placement="top">
 						<Tag
 							color={
-								action === 'add'
-									? '#2db7f5'
-									: action === 'edit' && urlIndex === index
-									? '#f50'
-									: '#2db7f5'
+								action === 'add' ? '#2db7f5' : action === 'edit' && urlIndex === i ? '#f50' : '#2db7f5'
 							}
 							closable={true}
 							style={{ cursor: 'pointer' }}
-							onClick={() => this.handleOnClick(val, index)}
-							onClose={e => this.removeUrl(val)}>
-							{action === 'add'
-								? val
-								: action === 'edit' && urlIndex === index
-								? `(Editing) ${val}`
-								: val}
+							onClick={() => this.handleOnClick(d, i)}
+							onClose={e => this.removeUrl(d)}>
+							{action === 'add' ? d : action === 'edit' && urlIndex === i ? `(Editing) ${d}` : d}
 						</Tag>
 					</Tooltip>
 				);
 				return (
-					<span key={val} style={{ display: 'inline-block' }}>
+					<span key={`${d}-${i}`} style={{ display: 'inline-block' }}>
 						{tagElem}
 					</span>
 				);
