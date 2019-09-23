@@ -111,11 +111,12 @@ export default class InputUrl extends Component {
 			placeholder = '',
 			styles = {}
 		} = this.props;
+		console.log('multiple: ', multiple);
 
 		if (multiple) {
 			const { url, urlIndex, action } = this.state;
 			const { value = [] } = this.props;
-			const urlList = Array.isArray(value) ? [...value] : value.split(',');
+			const urlList = Array.isArray(value) && value.length ? [...value] : value.length ? value.split(',') : [];
 
 			const tagChild = urlList.map((d, i) => {
 				const tagElem = (
