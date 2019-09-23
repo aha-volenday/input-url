@@ -56,7 +56,7 @@ export default class InputUrl extends Component {
 				disabled={disabled}
 				name={id}
 				placeholder={placeholder || label || id}
-				style={styles}
+				style={{ width: '100%', ...styles }}
 				type="text"
 				onBlur={onBlur}
 				onChange={e => this.onChange(e, e.target.value)}
