@@ -54,7 +54,9 @@ module.exports = {
 	},
 	externals: {
 		antd: 'commonjs2 antd',
+		'rc-tween-one': 'commonjs2 rc-tween-one',
 		react: 'commonjs2 react',
+		'react-dom': 'commonjs2 react-dom',
 		'validate.js': 'commonjs2 validate.js'
 	},
 	plugins: [
