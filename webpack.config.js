@@ -53,11 +53,11 @@ module.exports = {
 		libraryTarget: 'commonjs2'
 	},
 	externals: {
-		antd: 'commonjs2 antd',
-		'rc-tween-one': 'commonjs2 rc-tween-one',
-		react: 'commonjs2 react',
-		'react-dom': 'commonjs2 react-dom',
-		'validate.js': 'commonjs2 validate.js'
+		antd: 'antd',
+		'rc-tween-one': 'rc-tween-one',
+		react: 'react',
+		'react-dom': 'react-dom',
+		'validate.js': 'validate.js'
 	},
 	plugins: [
 		new webpack.optimize.AggressiveMergingPlugin(),

@@ -195,12 +195,18 @@ export default class InputUrl extends Component {
 
 	render() {
 		const { errors } = this.state;
-		const { label = '', required = false, withLabel = false } = this.props;
+		const { extra = null, label = '', required = false, withLabel = false } = this.props;
 
 		const formItemCommonProps = {
 			colon: false,
 			help: errors.length != 0 ? errors[0] : '',
-			label: withLabel ? label : false,
+			label: withLabel ? (
+				<>
+					<div style={{ float: 'right' }}>{extra}</div> <span class="label">{label}</span>
+				</>
+			) : (
+				false
+			),
 			required,
 			validateStatus: errors.length != 0 ? 'error' : 'success'
 		};
