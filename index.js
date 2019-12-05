@@ -157,7 +157,6 @@ export default class InputUrl extends Component {
 					</TweenOneGroup>
 					<Tooltip title={`Press Enter to ${action} a URL`} placement="bottom" trigger="focus">
 						<Input
-							allowClear
 							autoComplete="off"
 							disabled={disabled}
 							name={id}
@@ -178,7 +177,6 @@ export default class InputUrl extends Component {
 
 		return (
 			<Input
-				allowClear
 				autoComplete="off"
 				disabled={disabled}
 				name={id}
