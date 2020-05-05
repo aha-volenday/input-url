@@ -1,7 +1,6 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import validate from 'validate.js';
 import { Form, Input, message, Tag, Tooltip } from 'antd';
-import { TweenOneGroup } from 'rc-tween-one';
 
 import './styles.css';
 
@@ -113,6 +112,8 @@ export default class InputUrl extends Component {
 		} = this.props;
 
 		if (multiple) {
+			const { TweenOneGroup } = require('rc-tween-one');
+
 			const { url, urlIndex, action } = this.state;
 			const { value = [] } = this.props;
 			const urlList = Array.isArray(value) && value.length ? [...value] : value.length ? value.split(',') : [];
@@ -148,7 +149,7 @@ export default class InputUrl extends Component {
 			});
 
 			return (
-				<Fragment>
+				<>
 					<TweenOneGroup
 						enter={{ scale: 0.8, opacity: 0, type: 'from', duration: 100 }}
 						leave={{ opacity: 0, width: 0, scale: 0, duration: 200 }}
@@ -169,7 +170,7 @@ export default class InputUrl extends Component {
 							value={url}
 						/>
 					</Tooltip>
-				</Fragment>
+				</>
 			);
 		}
 
