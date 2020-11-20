@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import validate from 'validate.js';
-import { Form, Input, message, Tag, Tooltip } from 'antd';
+import { Form, message, Skeleton, Tag, Tooltip } from 'antd';
 
 import './styles.css';
+
+const browser = typeof process.browser !== 'undefined' ? process.browser : true;
 
 export default class InputUrl extends Component {
 	state = { errors: [], action: 'add', url: '', urlIndex: 0 };
@@ -100,6 +102,8 @@ export default class InputUrl extends Component {
 	};
 
 	renderInput() {
+		const { Input } = require('antd');
+
 		const {
 			disabled = false,
 			id,
@@ -210,6 +214,6 @@ export default class InputUrl extends Component {
 			validateStatus: errors.length != 0 ? 'error' : 'success'
 		};
 
-		return <Form.Item {...formItemCommonProps}>{this.renderInput()}</Form.Item>;
+		return <Form.Item {...formItemCommonProps}>{browser ? this.renderInput() : <Skeleton active paragraph={{ rows: 1, width: '100%' }} title={false} />}</Form.Item>;
 	}
 }
