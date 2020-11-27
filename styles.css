@@ -11,3 +11,7 @@
 .ant-form-item-label label .label {
     float: left !important;
 }
+
+.ant-form-vertical .ant-form-item {
+	margin-bottom: 0px;
+}
