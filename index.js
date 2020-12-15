@@ -188,7 +188,11 @@ export default class InputUrl extends Component {
 				placeholder={placeholder || label || id}
 				style={{ width: '100%', ...styles }}
 				type="text"
-				onBlur={onBlur}
+				onBlur={e => {
+					const newValue = e.target.value.trim();
+					this.onChange({ target: { name: id, value: newValue } }, id, newValue);
+					onBlur(e);
+				}}
 				onChange={e => this.onChange(e, e.target.value)}
 				onPressEnter={onPressEnter}
 				value={value ? value : ''}
@@ -214,6 +218,14 @@ export default class InputUrl extends Component {
 			validateStatus: errors.length != 0 ? 'error' : 'success'
 		};
 
-		return <Form.Item {...formItemCommonProps}>{browser ? this.renderInput() : <Skeleton active paragraph={{ rows: 1, width: '100%' }} title={false} />}</Form.Item>;
+		return (
+			<Form.Item {...formItemCommonProps}>
+				{browser ? (
+					this.renderInput()
+				) : (
+					<Skeleton active paragraph={{ rows: 1, width: '100%' }} title={false} />
+				)}
+			</Form.Item>
+		);
 	}
 }
