@@ -9,18 +9,9 @@ const browser = typeof process.browser !== 'undefined' ? process.browser : true;
 export default class InputUrl extends Component {
 	state = { errors: [], action: 'add', url: '', urlIndex: 0 };
 
-	onChangeTimeout = null;
 	onChange = async (e, value) => {
-		const { id, onChange, onValidate } = this.props;
-
+		const { id, onChange } = this.props;
 		onChange(e, id, value);
-
-		this.onChangeTimeout && clearTimeout(this.onChangeTimeout);
-		this.onChangeTimeout = setTimeout(async () => {
-			const errors = this.validate(value);
-			await this.setState({ errors });
-			if (onValidate) onValidate(id, errors);
-		}, 500);
 	};
 
 	validate = value => {
