@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import validate from 'validate.js';
 import { Form, message, Skeleton, Tag, Tooltip } from 'antd';
 
-import './styles.css';
+const browser = typeof window !== 'undefined' ? true : false;
 
-const browser = typeof process.browser !== 'undefined' ? process.browser : true;
+if (browser) require('./styles.css');
 
 export default class InputUrl extends Component {
 	state = { errors: [], action: 'add', url: '', urlIndex: 0 };
