@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import validate from 'validate.js';
 import { Form, message, Skeleton, Tag, Tooltip } from 'antd';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 
 const browser = typeof window !== 'undefined' ? true : false;
 
@@ -193,14 +194,22 @@ export default class InputUrl extends Component {
 
 	render() {
 		const { errors } = this.state;
-		const { extra = null, label = '', required = false, withLabel = false } = this.props;
+		const { extra = null, label = '', required = false, withLabel = false, toolTip = '' } = this.props;
 
 		const formItemCommonProps = {
 			colon: false,
 			help: errors.length != 0 ? errors[0] : '',
 			label: withLabel ? (
 				<>
-					<div style={{ float: 'right' }}>{extra}</div> <span class="label">{label}</span>
+					<div style={{ float: 'right' }}>{extra}</div>
+					<span class="label">
+						{label}{' '}
+						{toolTip && (
+							<Tooltip title={toolTip}>
+								<QuestionCircleOutlined />
+							</Tooltip>
+						)}
+					</span>
 				</>
 			) : (
 				false
