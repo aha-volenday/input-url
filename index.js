@@ -207,7 +207,7 @@ export default class InputUrl extends Component {
 			required,
 			validateStatus: errors.length != 0 ? 'error' : 'success'
 		};
-		if (inlineError) formItemCommonProps = { ...formItemCommonProps, help: error ? error : '' };
+		if (inlineError) formItemCommonProps = { ...formItemCommonProps, help: errors.length != 0 ? errors[0] : '' };
 
 		return (
 			<Form.Item {...formItemCommonProps}>
