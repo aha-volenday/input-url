@@ -193,11 +193,10 @@ export default class InputUrl extends Component {
 
 	render() {
 		const { errors } = this.state;
-		const { extra = null, label = '', required = false, withLabel = false } = this.props;
+		const { extra = null, inlineError = true, label = '', required = false, withLabel = false } = this.props;
 
-		const formItemCommonProps = {
+		let formItemCommonProps = {
 			colon: false,
-			help: errors.length != 0 ? errors[0] : '',
 			label: withLabel ? (
 				<>
 					<div style={{ float: 'right' }}>{extra}</div> <span class="label">{label}</span>
@@ -208,6 +207,7 @@ export default class InputUrl extends Component {
 			required,
 			validateStatus: errors.length != 0 ? 'error' : 'success'
 		};
+		if (inlineError) formItemCommonProps = { ...formItemCommonProps, help: error ? error : '' };
 
 		return (
 			<Form.Item {...formItemCommonProps}>
